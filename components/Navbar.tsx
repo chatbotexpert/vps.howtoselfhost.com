@@ -19,7 +19,7 @@ export function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-divider bg-background/80 backdrop-blur-md">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group" onClick={() => setMobileOpen(false)}>
@@ -65,7 +65,7 @@ export function Navbar() {
               </Link>
               <Link
                 href="/pricing"
-                className="bg-accent hover:opacity-90 text-background text-sm font-semibold px-4 py-2 rounded-full transition-all duration-200 shadow-lg shadow-accent/20"
+                className="bg-accent hover:opacity-90 text-white dark:text-background text-xs font-mono font-bold uppercase px-5 py-2.5 rounded-xl transition-all duration-300 shadow-md shadow-accent/20"
               >
                 Sign Up
               </Link>
@@ -89,7 +89,7 @@ export function Navbar() {
       {/* Mobile Nav */}
       {mobileOpen && (
         <div className="md:hidden border-t border-divider bg-background">
-          <nav className="max-w-6xl mx-auto px-4 py-3 flex flex-col gap-1">
+          <nav className="max-w-7xl mx-auto px-4 py-3 flex flex-col gap-1">
             {navLinks.map((link) => (
               <Link
                 key={link.href}

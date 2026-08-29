@@ -578,7 +578,7 @@ export default function OrderClient({ dbPlans }: { dbPlans: any[] }) {
               <button className="bg-white dark:bg-surface text-foreground px-6 py-4 rounded-t-lg font-medium shadow-sm border-t border-l border-r border-divider z-20">
                 I'm a new customer
               </button>
-              <button className="bg-[#1273B9] text-white px-6 py-4 rounded-t-lg font-medium shadow-sm z-10 opacity-90 hover:opacity-100">
+              <button className="bg-accent text-white dark:text-background px-6 py-4 rounded-t-lg font-medium shadow-sm z-10 opacity-90 hover:opacity-100">
                 I already have an account
               </button>
             </div>
@@ -590,11 +590,11 @@ export default function OrderClient({ dbPlans }: { dbPlans: any[] }) {
                  <div className="flex gap-2">
                    <div className="flex items-center gap-2 border border-[#202E39]/30 dark:border-divider rounded-md px-2.5 py-1 bg-white dark:bg-surface text-[11px] font-bold">
                      <Lock className="w-5 h-5 text-[#202E39] dark:text-foreground/80" strokeWidth={1.5} />
-                     <div className="leading-[1.1]"><span className="block text-[#202E39] dark:text-foreground">Privacy</span><span className="block text-[#1273B9] dark:text-white/60 font-medium">Protected</span></div>
+                     <div className="leading-[1.1]"><span className="block text-[#202E39] dark:text-foreground">Privacy</span><span className="block text-accent dark:text-white/60 font-medium">Protected</span></div>
                    </div>
                    <div className="flex items-center gap-2 border border-[#202E39]/30 dark:border-divider rounded-md px-2.5 py-1 bg-white dark:bg-surface text-[11px] font-bold">
                      <ShieldCheck className="w-5 h-5 text-[#202E39] dark:text-foreground/80" strokeWidth={1.5} />
-                     <div className="leading-[1.1]"><span className="block text-[#202E39] dark:text-foreground">Secure</span><span className="block text-[#1273B9] dark:text-white/60 font-medium">Checkout</span></div>
+                     <div className="leading-[1.1]"><span className="block text-[#202E39] dark:text-foreground">Secure</span><span className="block text-accent dark:text-white/60 font-medium">Checkout</span></div>
                    </div>
                  </div>
                </div>
@@ -603,52 +603,52 @@ export default function OrderClient({ dbPlans }: { dbPlans: any[] }) {
                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                    <div>
                      <label className="block text-[13px] text-muted mb-1 font-medium">Business Name</label>
-                     <input type="text" placeholder="optional" className="w-full border border-divider rounded p-2.5 text-[14px] bg-transparent focus:border-[#1273B9] focus:outline-none transition-colors" />
+                     <input type="text" placeholder="optional" className="w-full border border-divider rounded p-2.5 text-[14px] bg-transparent focus:border-accent focus:outline-none transition-colors" />
                    </div>
                    <div>
                      <label className="block text-[13px] text-muted mb-1 font-medium">VAT Number <span className="text-[10px] bg-divider/50 rounded-full px-1.5 py-0.5 ml-1 text-muted-foreground">?</span></label>
-                     <input type="text" placeholder="optional" className="w-full border border-divider rounded p-2.5 text-[14px] bg-transparent focus:border-[#1273B9] focus:outline-none transition-colors" />
+                     <input type="text" placeholder="optional" className="w-full border border-divider rounded p-2.5 text-[14px] bg-transparent focus:border-accent focus:outline-none transition-colors" />
                    </div>
                  </div>
                  
                  <div className="grid grid-cols-1 md:grid-cols-[100px_1fr_1fr] gap-5">
                    <div>
                      <label className="block text-[13px] text-muted mb-1 font-medium">Salutation</label>
-                     <select className="w-full border border-divider rounded p-2.5 text-[14px] bg-white dark:bg-surface focus:border-[#1273B9] focus:outline-none transition-colors">
+                     <select className="w-full border border-divider rounded p-2.5 text-[14px] bg-white dark:bg-surface focus:border-accent focus:outline-none transition-colors">
                        <option className="bg-white dark:bg-[#1e293b] text-black dark:text-white">Mr</option>
                        <option className="bg-white dark:bg-[#1e293b] text-black dark:text-white">Ms</option>
                      </select>
                    </div>
                    <div>
                      <label className="block text-[13px] text-muted mb-1 font-medium">First Name</label>
-                     <input type="text" required className="w-full border border-divider rounded p-2.5 text-[14px] bg-transparent focus:border-[#1273B9] focus:outline-none transition-colors" value={formData.firstName || ''} onChange={e => setFormData({...formData, firstName: e.target.value})} />
+                     <input type="text" required className="w-full border border-divider rounded p-2.5 text-[14px] bg-transparent focus:border-accent focus:outline-none transition-colors" value={formData.firstName || ''} onChange={e => setFormData({...formData, firstName: e.target.value})} />
                    </div>
                    <div>
                      <label className="block text-[13px] text-muted mb-1 font-medium">Last Name</label>
-                     <input type="text" required className="w-full border border-divider rounded p-2.5 text-[14px] bg-transparent focus:border-[#1273B9] focus:outline-none transition-colors" value={formData.lastName || ''} onChange={e => setFormData({...formData, lastName: e.target.value})} />
+                     <input type="text" required className="w-full border border-divider rounded p-2.5 text-[14px] bg-transparent focus:border-accent focus:outline-none transition-colors" value={formData.lastName || ''} onChange={e => setFormData({...formData, lastName: e.target.value})} />
                    </div>
                  </div>
                  
                  <div>
                    <label className="block text-[13px] text-muted mb-1 font-medium">Address</label>
-                   <input type="text" required placeholder="Enter your Address" className="w-full border border-divider rounded p-2.5 text-[14px] bg-transparent focus:border-[#1273B9] focus:outline-none transition-colors" value={formData.address || ''} onChange={e => setFormData({...formData, address: e.target.value})} />
+                   <input type="text" required placeholder="Enter your Address" className="w-full border border-divider rounded p-2.5 text-[14px] bg-transparent focus:border-accent focus:outline-none transition-colors" value={formData.address || ''} onChange={e => setFormData({...formData, address: e.target.value})} />
                  </div>
                  
                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                    <div>
                      <label className="block text-[13px] text-muted mb-1 font-medium">City</label>
-                     <input type="text" required className="w-full border border-divider rounded p-2.5 text-[14px] bg-transparent focus:border-[#1273B9] focus:outline-none transition-colors" value={formData.city || ''} onChange={e => setFormData({...formData, city: e.target.value})} />
+                     <input type="text" required className="w-full border border-divider rounded p-2.5 text-[14px] bg-transparent focus:border-accent focus:outline-none transition-colors" value={formData.city || ''} onChange={e => setFormData({...formData, city: e.target.value})} />
                    </div>
                    <div>
                      <label className="block text-[13px] text-muted mb-1 font-medium">Postcode</label>
-                     <input type="text" required className="w-full border border-divider rounded p-2.5 text-[14px] bg-transparent focus:border-[#1273B9] focus:outline-none transition-colors" value={formData.postcode || ''} onChange={e => setFormData({...formData, postcode: e.target.value})} />
+                     <input type="text" required className="w-full border border-divider rounded p-2.5 text-[14px] bg-transparent focus:border-accent focus:outline-none transition-colors" value={formData.postcode || ''} onChange={e => setFormData({...formData, postcode: e.target.value})} />
                    </div>
                  </div>
                  
                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                    <div>
                      <label className="block text-[13px] text-muted mb-1 font-medium">Country</label>
-                     <select className="w-full border border-divider rounded p-2.5 text-[14px] bg-white dark:bg-surface focus:border-[#1273B9] focus:outline-none transition-colors" value={formData.country || 'Pakistan'} onChange={e => setFormData({...formData, country: e.target.value})}>
+                     <select className="w-full border border-divider rounded p-2.5 text-[14px] bg-white dark:bg-surface focus:border-accent focus:outline-none transition-colors" value={formData.country || 'Pakistan'} onChange={e => setFormData({...formData, country: e.target.value})}>
                        {COUNTRIES.map(country => (
                          <option key={country} value={country} className="bg-white dark:bg-[#1e293b] text-black dark:text-white">{country}</option>
                        ))}
@@ -656,23 +656,23 @@ export default function OrderClient({ dbPlans }: { dbPlans: any[] }) {
                    </div>
                    <div>
                      <label className="block text-[13px] text-muted mb-1 font-medium">State / Province</label>
-                     <input type="text" placeholder="Enter your State" className="w-full border border-divider rounded p-2.5 text-[14px] bg-transparent focus:border-[#1273B9] focus:outline-none transition-colors" value={formData.state || ''} onChange={e => setFormData({...formData, state: e.target.value})} />
+                     <input type="text" placeholder="Enter your State" className="w-full border border-divider rounded p-2.5 text-[14px] bg-transparent focus:border-accent focus:outline-none transition-colors" value={formData.state || ''} onChange={e => setFormData({...formData, state: e.target.value})} />
                    </div>
                  </div>
                  
                  <div>
                    <label className="block text-[13px] text-muted mb-1 font-medium">Telephone <span className="text-[10px] bg-divider/50 rounded-full px-1.5 py-0.5 ml-1 text-muted-foreground">?</span></label>
-                   <input type="tel" required className="w-full border border-divider rounded p-2.5 text-[14px] bg-transparent focus:border-[#1273B9] focus:outline-none transition-colors" />
+                   <input type="tel" required className="w-full border border-divider rounded p-2.5 text-[14px] bg-transparent focus:border-accent focus:outline-none transition-colors" />
                  </div>
                  
                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                    <div>
                      <label className="block text-[13px] text-muted mb-1 font-medium">Email</label>
-                     <input type="email" required className="w-full border border-divider rounded p-2.5 text-[14px] bg-transparent focus:border-[#1273B9] focus:outline-none transition-colors" value={formData.email || ''} onChange={e => setFormData({...formData, email: e.target.value})} />
+                     <input type="email" required className="w-full border border-divider rounded p-2.5 text-[14px] bg-transparent focus:border-accent focus:outline-none transition-colors" value={formData.email || ''} onChange={e => setFormData({...formData, email: e.target.value})} />
                    </div>
                    <div>
                      <label className="block text-[13px] text-muted mb-1 font-medium">Confirm Email</label>
-                     <input type="email" required className="w-full border border-divider rounded p-2.5 text-[14px] bg-transparent focus:border-[#1273B9] focus:outline-none transition-colors" />
+                     <input type="email" required className="w-full border border-divider rounded p-2.5 text-[14px] bg-transparent focus:border-accent focus:outline-none transition-colors" />
                    </div>
                  </div>
                </div>
@@ -681,13 +681,13 @@ export default function OrderClient({ dbPlans }: { dbPlans: any[] }) {
                  <button type="button" onClick={() => {setStep(1); window.scrollTo(0,0);}} className="text-[13px] font-medium text-muted hover:text-foreground">
                    &larr; Back
                  </button>
-                 <button type="submit" className="bg-[#1273B9] hover:bg-[#0f62a0] text-white px-8 py-2.5 rounded-full font-bold transition-colors">
+                 <button type="submit" className="bg-accent hover:opacity-90 text-white dark:text-background px-8 py-3 rounded-xl font-mono uppercase font-bold shadow-md shadow-accent/20 transition-all duration-300">
                    Next
                  </button>
                </div>
                
                <div className="mt-10 border-t border-divider pt-6 text-[10px] leading-relaxed text-muted max-w-3xl">
-                 Your privacy is important to us. We process your personal data for the purpose of creating a user account and carrying out your order as per our <a href="#" className="text-[#1273B9] hover:underline">privacy notice</a>. We take the highest precautions to make sure that your data is safe and secure. We will never sell your data to any third parties.
+                 Your privacy is important to us. We process your personal data for the purpose of creating a user account and carrying out your order as per our <a href="#" className="text-accent hover:underline">privacy notice</a>. We take the highest precautions to make sure that your data is safe and secure. We will never sell your data to any third parties.
                </div>
             </form>
           </div>
@@ -704,8 +704,8 @@ export default function OrderClient({ dbPlans }: { dbPlans: any[] }) {
 
               <form onSubmit={(e) => { e.preventDefault(); setStep(4); window.scrollTo(0,0); }} className="border border-divider rounded-lg p-8 max-w-3xl mx-auto">
                 <div className="flex justify-center mb-6">
-                  <div className="border border-[#1273B9] rounded-full px-12 py-2 flex items-center justify-center cursor-pointer hover:bg-[#1273B9]/5 transition-colors">
-                    <span className="text-[#1273B9] font-bold italic text-lg tracking-tight">PayPal</span>
+                  <div className="border border-accent rounded-xl px-12 py-3 flex items-center justify-center cursor-pointer hover:bg-accent/5 transition-colors">
+                    <span className="text-accent font-bold italic text-lg tracking-tight">PayPal</span>
                   </div>
                 </div>
 
@@ -740,7 +740,7 @@ export default function OrderClient({ dbPlans }: { dbPlans: any[] }) {
                        required 
                        minLength={16}
                        placeholder="1234 5678 9012 3456" 
-                       className="w-full h-12 border border-divider rounded flex items-center pl-12 pr-4 bg-transparent focus:border-[#1273B9] focus:outline-none transition-colors text-sm text-foreground" 
+                       className="w-full h-12 border border-divider rounded flex items-center pl-12 pr-4 bg-transparent focus:border-accent focus:outline-none transition-colors text-sm text-foreground" 
                      />
                   </div>
                 </div>
@@ -750,11 +750,11 @@ export default function OrderClient({ dbPlans }: { dbPlans: any[] }) {
                 </p>
 
                 <p className="text-[10px] text-muted mb-8 leading-relaxed">
-                  We will transfer your data for payment processing to the respective payment service provider for your chosen payment method in accordance with our <a href="#" className="text-[#1273B9] hover:underline">privacy notice</a>.
+                  We will transfer your data for payment processing to the respective payment service provider for your chosen payment method in accordance with our <a href="#" className="text-accent hover:underline">privacy notice</a>.
                 </p>
 
                 <div className="flex justify-end">
-                  <button type="submit" className="bg-[#1273B9] hover:bg-[#0f62a0] text-white px-8 py-2.5 rounded-full font-bold transition-colors">
+                  <button type="submit" className="bg-accent hover:opacity-90 text-white dark:text-background px-8 py-3 rounded-xl font-mono uppercase font-bold shadow-md shadow-accent/20 transition-all duration-300">
                     Next
                   </button>
                 </div>
@@ -775,7 +775,7 @@ export default function OrderClient({ dbPlans }: { dbPlans: any[] }) {
               </p>
               
               <div className="flex justify-center">
-                 <Link href="/" className="inline-flex items-center justify-center bg-[#1273B9] hover:bg-[#0f62a0] text-white font-bold px-8 py-3 rounded-full transition-colors">
+                 <Link href="/" className="inline-flex items-center justify-center bg-accent hover:opacity-90 text-white dark:text-background px-8 py-3 rounded-xl font-mono uppercase font-bold shadow-md shadow-accent/20 transition-all duration-300">
                    Return to Dashboard
                  </Link>
               </div>
@@ -825,7 +825,7 @@ export default function OrderClient({ dbPlans }: { dbPlans: any[] }) {
                 type="submit" 
                 form={step === 1 ? "config-form" : "personal-form"}
                 disabled={isSubmitting}
-                className="bg-[#1570B7] hover:bg-[#0f558c] disabled:opacity-50 text-white font-bold py-3 px-10 rounded-full transition-colors text-lg"
+                className="inline-flex items-center justify-center gap-3 bg-accent hover:opacity-90 disabled:opacity-50 text-white dark:text-background px-10 py-4 font-mono text-lg font-bold uppercase rounded-xl transition-all duration-300 shadow-lg shadow-accent/20"
               >
                 {isSubmitting ? "..." : "Next"}
               </button>
