@@ -47,18 +47,27 @@ export default async function Home() {
 
           {/* Right Column: Borderless Stats List */}
           <div className="w-full lg:w-2/5 flex flex-col justify-center">
-             <ul className="flex flex-col gap-10">
-               <li className="flex flex-col border-l-2 border-accent pl-6 py-2">
-                 <span className="text-4xl sm:text-5xl font-extrabold text-foreground font-sans tracking-tight leading-none mb-2">99.99%</span>
-                 <span className="text-xs sm:text-sm text-muted font-mono uppercase tracking-widest">Guaranteed Uptime</span>
+             <ul className="relative flex flex-col gap-12 pl-8">
+               {/* Continuous glowing gradient line behind */}
+               <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-gradient-to-b from-accent/80 via-accent/40 to-transparent"></div>
+               
+               <li className="relative flex flex-col group">
+                 {/* Glowing dot on the line */}
+                 <div className="absolute -left-[37px] top-3 w-2 h-2 rounded-full bg-accent shadow-[0_0_10px_2px_rgba(0,255,255,0.5)] group-hover:scale-150 group-hover:bg-white transition-all duration-300"></div>
+                 <span className="text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-foreground to-foreground/60 font-sans tracking-tight leading-none mb-2 group-hover:translate-x-1 transition-transform duration-300">99.99%</span>
+                 <span className="text-xs sm:text-sm text-accent/80 font-mono uppercase tracking-widest font-semibold group-hover:text-accent transition-colors duration-300">Guaranteed Uptime</span>
                </li>
-               <li className="flex flex-col border-l-2 border-accent pl-6 py-2">
-                 <span className="text-4xl sm:text-5xl font-extrabold text-foreground font-sans tracking-tight leading-none mb-2">Instant</span>
-                 <span className="text-xs sm:text-sm text-muted font-mono uppercase tracking-widest">Easy Onboarding</span>
+               
+               <li className="relative flex flex-col group">
+                 <div className="absolute -left-[37px] top-3 w-2 h-2 rounded-full bg-accent shadow-[0_0_10px_2px_rgba(0,255,255,0.5)] group-hover:scale-150 group-hover:bg-white transition-all duration-300"></div>
+                 <span className="text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-foreground to-foreground/60 font-sans tracking-tight leading-none mb-2 group-hover:translate-x-1 transition-transform duration-300">Instant</span>
+                 <span className="text-xs sm:text-sm text-accent/80 font-mono uppercase tracking-widest font-semibold group-hover:text-accent transition-colors duration-300">Easy Onboarding</span>
                </li>
-               <li className="flex flex-col border-l-2 border-accent pl-6 py-2">
-                 <span className="text-4xl sm:text-5xl font-extrabold text-foreground font-sans tracking-tight leading-none mb-2">24/7</span>
-                 <span className="text-xs sm:text-sm text-muted font-mono uppercase tracking-widest">Live Chat Support</span>
+               
+               <li className="relative flex flex-col group">
+                 <div className="absolute -left-[37px] top-3 w-2 h-2 rounded-full bg-accent shadow-[0_0_10px_2px_rgba(0,255,255,0.5)] group-hover:scale-150 group-hover:bg-white transition-all duration-300"></div>
+                 <span className="text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-foreground to-foreground/60 font-sans tracking-tight leading-none mb-2 group-hover:translate-x-1 transition-transform duration-300">24/7</span>
+                 <span className="text-xs sm:text-sm text-accent/80 font-mono uppercase tracking-widest font-semibold group-hover:text-accent transition-colors duration-300">Live Chat Support</span>
                </li>
              </ul>
           </div>
