@@ -68,6 +68,7 @@ export default function OrderClient({ dbPlans }: { dbPlans: any[] }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [session, setSession] = useState<{ authenticated: boolean; user?: { email: string; firstName: string } } | null>(null);
+  const [accountPassword, setAccountPassword] = useState<string | null>(null);
 
   useEffect(() => {
     fetch("/api/auth/session")
@@ -179,6 +180,9 @@ export default function OrderClient({ dbPlans }: { dbPlans: any[] }) {
       });
       const data = await res.json();
       if (res.ok) {
+        if (data.accountPassword) {
+          setAccountPassword(data.accountPassword);
+        }
         setStep(3);
         window.scrollTo(0, 0);
       } else {
@@ -771,9 +775,28 @@ export default function OrderClient({ dbPlans }: { dbPlans: any[] }) {
               </div>
               <h2 className="text-3xl font-bold text-[#202E39] dark:text-foreground mb-4">Order Confirmed!</h2>
               <p className="text-base text-muted mb-8 max-w-xl mx-auto">
-                Thank you for your order. We have successfully received your payment of <strong className="text-foreground">${dueToday.toFixed(2)}</strong>. We are now provisioning your server and will send the login details to <strong>{formData.email || 'your email address'}</strong> shortly.
+                Thank you for your order. We have successfully received your payment of <strong className="text-foreground">${dueToday.toFixed(2)}</strong>. We are now provisioning your server.
               </p>
               
+              {accountPassword && (
+                <div className="bg-slate-50 dark:bg-gray-800 border border-slate-200 dark:border-gray-700 p-6 rounded-xl max-w-lg mx-auto mb-8 text-left">
+                  <h3 className="font-bold text-slate-900 dark:text-white mb-2">Your Website Login Credentials</h3>
+                  <p className="text-sm text-slate-500 dark:text-gray-400 mb-4">
+                    Please save these details. You will need them to log in to the Customer Dashboard.
+                  </p>
+                  <div className="space-y-2">
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-slate-500 dark:text-gray-400">Email:</span>
+                      <strong className="text-slate-900 dark:text-white">{formData.email}</strong>
+                    </div>
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-slate-500 dark:text-gray-400">Password:</span>
+                      <strong className="text-slate-900 dark:text-white font-mono bg-slate-200 dark:bg-gray-900 px-2 py-1 rounded">{accountPassword}</strong>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               <div className="flex justify-center">
                  <Link href="/" className="inline-flex items-center justify-center bg-accent hover:opacity-90 text-white dark:text-background px-8 py-3 rounded-xl font-mono uppercase font-bold shadow-md shadow-accent/20 transition-all duration-300">
                    Return to Dashboard

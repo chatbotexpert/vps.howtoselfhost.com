@@ -34,6 +34,7 @@ export async function POST(req: Request) {
     const cookieStore = await cookies();
     const sessionUserId = cookieStore.get("user_session")?.value;
 
+    let generatedPassword = null;
     let user;
 
     if (sessionUserId) {
@@ -50,10 +51,15 @@ export async function POST(req: Request) {
       });
 
       if (!user) {
+        const bcrypt = require("bcryptjs");
+        // Generate a random password for their Contabo-style account
+        generatedPassword = Math.random().toString(36).slice(-10);
+        const passwordHash = await bcrypt.hash(generatedPassword, 12);
+
         user = await db.user.create({
           data: {
             email: personalInfo.email,
-            passwordHash: hashFake(Math.random().toString(36).slice(-10)),
+            passwordHash: passwordHash,
             businessName: personalInfo.businessName || null,
             firstName: personalInfo.firstName,
             lastName: personalInfo.lastName,
@@ -78,6 +84,7 @@ export async function POST(req: Request) {
         vcpu: "From Plan Specs",
         disk: storageType || "NVMe",
         region: region,
+        sshPassword: password, // The password from Step 1
         status: "pending_payment",
         nextPayment: new Date(new Date().setMonth(new Date().getMonth() + term)),
       }
@@ -96,7 +103,7 @@ export async function POST(req: Request) {
       }
     });
 
-    return NextResponse.json({ success: true, orderId: order.id });
+    return NextResponse.json({ success: true, orderId: order.id, accountPassword: generatedPassword });
 
   } catch (error: any) {
     console.error("Order completion failed:", error);
