@@ -4,6 +4,11 @@ import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Server, Globe, ArrowRight, CreditCard, Shield, Monitor, HardDrive, Network, MapPin, Eye, EyeOff, RefreshCcw, Lock, ShieldCheck } from "lucide-react";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+import StripeCheckoutForm from "./StripeCheckoutForm";
+
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || "");
 
 // VPS_PLANS will be generated dynamically from dbPlans
 const REGIONS = [
@@ -69,6 +74,7 @@ export default function OrderClient({ dbPlans }: { dbPlans: any[] }) {
   const [errorMessage, setErrorMessage] = useState("");
   const [session, setSession] = useState<{ authenticated: boolean; user?: { email: string; firstName: string } } | null>(null);
   const [accountPassword, setAccountPassword] = useState<string | null>(null);
+  const [clientSecret, setClientSecret] = useState<string | null>(null);
 
   useEffect(() => {
     fetch("/api/auth/session")
@@ -183,8 +189,22 @@ export default function OrderClient({ dbPlans }: { dbPlans: any[] }) {
         if (data.accountPassword) {
           setAccountPassword(data.accountPassword);
         }
-        setStep(3);
-        window.scrollTo(0, 0);
+
+        // Initialize Stripe Payment
+        const piRes = await fetch("/api/create-payment-intent", {
+           method: "POST",
+           headers: { "Content-Type": "application/json" },
+           body: JSON.stringify({ amount: dueToday, orderId: data.orderId })
+        });
+        const piData = await piRes.json();
+
+        if (piRes.ok && piData.clientSecret) {
+          setClientSecret(piData.clientSecret);
+          setStep(3);
+          window.scrollTo(0, 0);
+        } else {
+          setErrorMessage(piData.error || "Failed to initialize payment.");
+        }
       } else {
         setErrorMessage(data.error || "Something went wrong. Please try again.");
       }
@@ -700,69 +720,30 @@ export default function OrderClient({ dbPlans }: { dbPlans: any[] }) {
         {step === 3 && (
           <div className="max-w-4xl mx-auto w-full mb-12">
             <div className="bg-white dark:bg-surface p-8 shadow-sm border border-divider rounded-lg">
-              <h2 className="text-[20px] font-bold text-[#202E39] dark:text-foreground mb-1">2. Payment</h2>
-              <div className="flex items-center gap-2 mb-6">
-                <span className="text-[13px] font-bold text-[#202E39] dark:text-foreground">Recommended Payment Methods</span>
-                <svg className="w-4 h-4 text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
-              </div>
-
-              <form onSubmit={(e) => { e.preventDefault(); setStep(4); window.scrollTo(0,0); }} className="border border-divider rounded-lg p-8 max-w-3xl mx-auto">
-                <div className="flex justify-center mb-6">
-                  <div className="border border-accent rounded-xl px-12 py-3 flex items-center justify-center cursor-pointer hover:bg-accent/5 transition-colors">
-                    <span className="text-accent font-bold italic text-lg tracking-tight">PayPal</span>
+              <h2 className="text-[20px] font-bold text-[#202E39] dark:text-foreground mb-6">2. Payment</h2>
+              
+              {clientSecret ? (
+                <Elements stripe={stripePromise} options={{ clientSecret }}>
+                  <StripeCheckoutForm 
+                    amount={dueToday} 
+                    onSuccess={() => {
+                      setStep(4);
+                      window.scrollTo(0,0);
+                    }}
+                    onBack={() => {
+                      setStep(2);
+                      window.scrollTo(0,0);
+                    }}
+                  />
+                </Elements>
+              ) : (
+                <div className="text-center py-12">
+                  <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-accent border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]" role="status">
+                    <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">Loading...</span>
                   </div>
+                  <p className="mt-4 text-muted">Initializing secure payment gateway...</p>
                 </div>
-
-                <div className="relative flex items-center justify-center mb-8">
-                  <div className="absolute inset-0 flex items-center">
-                    <div className="w-full border-t border-divider"></div>
-                  </div>
-                  <div className="relative bg-white dark:bg-surface px-4 text-[12px] text-muted">or</div>
-                </div>
-
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="flex gap-2">
-                    <div className="w-10 h-6 bg-[#1a1f36] text-white text-[9px] font-bold italic flex items-center justify-center rounded">VISA</div>
-                    <div className="w-10 h-6 bg-[#eb001b] text-white text-[8px] font-bold flex items-center justify-center rounded relative overflow-hidden">
-                      <div className="absolute left-1 w-4 h-4 bg-[#f79e1b] rounded-full opacity-80 mix-blend-multiply"></div>
-                      <div className="absolute right-1 w-4 h-4 bg-[#ff5f00] rounded-full opacity-80 mix-blend-multiply"></div>
-                      <span className="relative z-10">MC</span>
-                    </div>
-                    <div className="w-10 h-6 bg-[#2671B9] text-white text-[8px] font-bold flex items-center justify-center rounded">AMEX</div>
-                  </div>
-                </div>
-
-                <p className="text-[13px] text-muted mb-4">
-                  Use Credit Card to pay the amount due today and any future subscription renewals automatically.
-                </p>
-
-                <div className="mb-6">
-                  <div className="w-full relative">
-                     <CreditCard className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted" />
-                     <input 
-                       type="text" 
-                       required 
-                       minLength={16}
-                       placeholder="1234 5678 9012 3456" 
-                       className="w-full h-12 border border-divider rounded flex items-center pl-12 pr-4 bg-transparent focus:border-accent focus:outline-none transition-colors text-sm text-foreground" 
-                     />
-                  </div>
-                </div>
-
-                <p className="text-[11px] text-muted mb-4 leading-relaxed">
-                  Your card information is securely stored on our payment provider's servers. Your card will be charged once you complete your order. It will be used in the future for renewals of this subscription or any other subscriptions on your account.
-                </p>
-
-                <p className="text-[10px] text-muted mb-8 leading-relaxed">
-                  We will transfer your data for payment processing to the respective payment service provider for your chosen payment method in accordance with our <a href="#" className="text-accent hover:underline">privacy notice</a>.
-                </p>
-
-                <div className="flex justify-end">
-                  <button type="submit" className="bg-accent hover:opacity-90 text-white dark:text-background px-8 py-3 rounded-xl font-mono uppercase font-bold shadow-md shadow-accent/20 transition-all duration-300">
-                    Next
-                  </button>
-                </div>
-              </form>
+              )}
             </div>
           </div>
         )}

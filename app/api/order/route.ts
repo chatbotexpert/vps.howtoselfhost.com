@@ -99,9 +99,18 @@ export async function POST(req: Request) {
         termMonths: term,
         amount: totalAmount,
         status: "unpaid",
-        paymentMethod: "payoneer"
+        paymentMethod: "stripe"
       }
     });
+
+    if (generatedPassword && user.email) {
+      try {
+        const { sendWelcomeEmail } = await import("@/lib/emails");
+        await sendWelcomeEmail(user.email, generatedPassword);
+      } catch (e) {
+        console.error("Failed to send welcome email:", e);
+      }
+    }
 
     return NextResponse.json({ success: true, orderId: order.id, accountPassword: generatedPassword });
 
