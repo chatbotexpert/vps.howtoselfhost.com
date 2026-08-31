@@ -12,8 +12,7 @@ function createPrismaClient() {
     return new PrismaClient({ adapter });
   }
 
-  const adapter = new PrismaBetterSqlite3({ url });
-  return new PrismaClient({ adapter });
+  return new PrismaClient();
 }
 
 declare global {
