@@ -16,6 +16,7 @@
     "@prisma/config": "^7.9.1",
     "@splinetool/react-spline": "^4.1.0",
     "@splinetool/runtime": "^1.12.92",
+    "@stripe/react-stripe-js": "^6.8.2",
     "@stripe/stripe-js": "^9.14.0",
     "@types/pg": "^8.23.1",
     "bcryptjs": "^3.0.3",
