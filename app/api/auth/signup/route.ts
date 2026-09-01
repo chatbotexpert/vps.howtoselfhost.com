@@ -1,7 +1,12 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import bcrypt from "bcryptjs";
-import { cookies } from "next/headers";
+import { sendVerificationEmail } from "@/lib/emails";
+
+// Helper to generate a 6-digit OTP
+function generateOTP() {
+  return Math.floor(100000 + Math.random() * 900000).toString();
+}
 
 export async function POST(req: Request) {
   try {
@@ -16,10 +21,14 @@ export async function POST(req: Request) {
     });
 
     if (existingUser) {
+      // If user exists but is not verified, we can resend OTP here or just return error
+      // Let's just return error for simplicity, they can login to trigger a new OTP
       return NextResponse.json({ error: "Email is already registered" }, { status: 400 });
     }
 
     const passwordHash = await bcrypt.hash(password, 10);
+    const otp = generateOTP();
+    const expiry = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes from now
 
     const newUser = await db.user.create({
       data: {
@@ -27,18 +36,21 @@ export async function POST(req: Request) {
         passwordHash,
         firstName,
         lastName,
+        verificationToken: otp,
+        verificationTokenExpiry: expiry,
+        isEmailVerified: false,
       },
     });
 
-    const cookieStore = await cookies();
-    cookieStore.set("user_session", newUser.id, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      maxAge: 60 * 60 * 24 * 7, // 1 week
-      path: "/",
-    });
+    // Send the OTP via email
+    await sendVerificationEmail(email, otp);
 
-    return NextResponse.json({ success: true, user: { id: newUser.id, email: newUser.email } });
+    // We do NOT set the cookie here anymore!
+    return NextResponse.json({ 
+      success: true, 
+      message: "Please check your email for the verification code.",
+      requiresVerification: true 
+    });
   } catch (error: any) {
     console.error("Signup error:", error);
     return NextResponse.json({ error: "Failed to create account" }, { status: 500 });

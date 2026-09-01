@@ -2,6 +2,12 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import bcrypt from "bcryptjs";
 import { cookies } from "next/headers";
+import { sendVerificationEmail } from "@/lib/emails";
+
+// Helper to generate a 6-digit OTP
+function generateOTP() {
+  return Math.floor(100000 + Math.random() * 900000).toString();
+}
 
 export async function POST(req: Request) {
   try {
@@ -23,6 +29,28 @@ export async function POST(req: Request) {
 
     if (!isValid) {
       return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
+    }
+
+    if (!user.isEmailVerified) {
+      const otp = generateOTP();
+      const expiry = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes from now
+      
+      await db.user.update({
+        where: { id: user.id },
+        data: {
+          verificationToken: otp,
+          verificationTokenExpiry: expiry,
+        },
+      });
+
+      await sendVerificationEmail(email, otp);
+
+      return NextResponse.json({ 
+        success: false, 
+        error: "EMAIL_NOT_VERIFIED", 
+        message: "Please verify your email",
+        requiresVerification: true 
+      }, { status: 403 });
     }
 
     const cookieStore = await cookies();

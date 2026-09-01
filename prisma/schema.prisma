@@ -19,11 +19,14 @@ model User {
   country      String?
   state        String?
   postcode     String?
-  telephone    String?
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
-  vpsInstances VpsInstance[]
-  orders       Order[]
+  telephone               String?
+  isEmailVerified         Boolean       @default(false)
+  verificationToken       String?
+  verificationTokenExpiry DateTime?
+  createdAt               DateTime      @default(now())
+  updatedAt               DateTime      @updatedAt
+  vpsInstances            VpsInstance[]
+  orders                  Order[]
 }
 
 model VpsInstance {

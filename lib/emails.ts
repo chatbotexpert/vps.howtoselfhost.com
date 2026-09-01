@@ -66,3 +66,20 @@ export async function sendServerReadyEmail(to: string, ip: string, sshUser: stri
     console.error("Failed to send server ready email:", error);
   }
 }
+
+export async function sendVerificationEmail(to: string, code: string) {
+  try {
+    await resend.emails.send({
+      from: FROM_EMAIL,
+      to,
+      subject: "Verify your Email - HowToSelfHost",
+      html: `
+        <h1>Email Verification</h1>
+        <p>Your verification code is: <strong>${code}</strong></p>
+        <p>This code will expire in 10 minutes.</p>
+      `,
+    });
+  } catch (error) {
+    console.error("Failed to send verification email:", error);
+  }
+}
