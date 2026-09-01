@@ -1,6 +1,6 @@
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY || "");
+const resend = new Resend(process.env.RESEND_API_KEY || "re_dummy_123");
 // For testing without a verified domain, use Resend's default "onboarding@resend.dev"
 // Ensure you only send emails to the address you verified your Resend account with.
 const FROM_EMAIL = "onboarding@resend.dev"; 
