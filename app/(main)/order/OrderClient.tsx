@@ -155,6 +155,10 @@ export default function OrderClient({ dbPlans }: { dbPlans: any[] }) {
     e.preventDefault();
     setErrorMessage("");
     if (step === 1) {
+      if (!image) {
+        setErrorMessage("Please select an operating system image.");
+        return;
+      }
       if (!password || password.length < 8) {
         setErrorMessage("Please enter a valid server password (minimum 8 characters).");
         return;
