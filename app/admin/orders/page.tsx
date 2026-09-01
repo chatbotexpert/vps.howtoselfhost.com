@@ -12,6 +12,7 @@ interface Order {
   createdAt: string;
   user: { email: string; firstName: string | null; lastName: string | null };
   vpsInstance: { name: string | null; region: string } | null;
+  stripePaymentIntentId: string | null;
 }
 
 const STATUS_OPTIONS = ["unpaid", "paid", "cancelled"];
@@ -37,12 +38,12 @@ export default function OrdersPage() {
   return (
     <div>
       <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-6">Orders</h1>
-      <div className="bg-white dark:bg-gray-900 rounded-xl border border-slate-200/60 dark:border-gray-800 overflow-hidden shadow-sm">
+      <div className="bg-white dark:bg-gray-900 rounded-xl border border-slate-200/60 dark:border-gray-800 overflow-hidden shadow-sm overflow-x-auto">
         <table className="w-full text-sm">
           <thead className="bg-slate-50 dark:bg-gray-800/50">
             <tr>
-              {["Customer", "Server", "Plan", "Amount", "Method", "Status", "Date"].map((h) => (
-                <th key={h} className="px-4 py-3 text-left text-xs font-semibold text-slate-500 dark:text-gray-400 uppercase tracking-wide">{h}</th>
+              {["Customer", "Server", "Plan", "Amount", "Method", "Payment ID", "Status", "Date"].map((h) => (
+                <th key={h} className="px-4 py-3 text-left text-xs font-semibold text-slate-500 dark:text-gray-400 uppercase tracking-wide whitespace-nowrap">{h}</th>
               ))}
             </tr>
           </thead>
@@ -57,6 +58,9 @@ export default function OrdersPage() {
                 <td className="px-4 py-3 text-slate-500 dark:text-gray-400 text-xs">{o.planId}<br />{o.termMonths}mo</td>
                 <td className="px-4 py-3 font-semibold text-slate-900 dark:text-white">${o.amount.toFixed(2)}</td>
                 <td className="px-4 py-3 text-slate-500 dark:text-gray-400 capitalize">{o.paymentMethod}</td>
+                <td className="px-4 py-3 text-slate-400 dark:text-gray-500 text-xs font-mono">
+                  {o.stripePaymentIntentId ? o.stripePaymentIntentId : "—"}
+                </td>
                 <td className="px-4 py-3">
                   <select
                     value={o.status}
