@@ -31,7 +31,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
     }
 
-    if (!user.isEmailVerified) {
+    if (!user.isEmailVerified && !user.isAdmin) {
       const otp = generateOTP();
       const expiry = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes from now
       
