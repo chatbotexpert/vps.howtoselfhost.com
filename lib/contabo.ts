@@ -121,3 +121,67 @@ export async function getContaboInstance(instanceId: string) {
     throw error;
   }
 }
+
+export async function updateContaboInstancePassword(instanceId: string, rootPassword: string) {
+  const isDryRun = process.env.CONTABO_CLIENT_ID === "placeholder_client_id";
+  if (isDryRun) {
+    console.log(`[Contabo API Dry-Run] Mocking password reset for ${instanceId}`);
+    return true;
+  }
+
+  const token = await getContaboToken();
+
+  try {
+    const response = await fetch(`${CONTABO_API_URL}/compute/instances/${instanceId}/actions/resetPassword`, {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        rootPassword,
+      }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.text();
+      console.error("Contabo Reset Password Error:", errorData);
+      throw new Error("Failed to reset password on Contabo");
+    }
+
+    return true;
+  } catch (error) {
+    console.error("Contabo API Error:", error);
+    throw error;
+  }
+}
+
+export async function cancelContaboInstance(instanceId: string) {
+  const isDryRun = process.env.CONTABO_CLIENT_ID === "placeholder_client_id";
+  if (isDryRun) {
+    console.log(`[Contabo API Dry-Run] Mocking cancellation for ${instanceId}`);
+    return true;
+  }
+
+  const token = await getContaboToken();
+
+  try {
+    const response = await fetch(`${CONTABO_API_URL}/compute/instances/${instanceId}/cancel`, {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.text();
+      console.error("Contabo Cancel Instance Error:", errorData);
+      throw new Error("Failed to cancel Contabo instance");
+    }
+
+    return true;
+  } catch (error) {
+    console.error("Contabo API Error:", error);
+    throw error;
+  }
+}
