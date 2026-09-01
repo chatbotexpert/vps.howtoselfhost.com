@@ -162,6 +162,10 @@ export default function OrderClient({ dbPlans }: { dbPlans: any[] }) {
       setStep(2);
       window.scrollTo(0, 0);
     } else if (step === 2) {
+      if (!session?.authenticated && formData.email !== formData.confirmEmail) {
+        setErrorMessage("Email and Confirm Email do not match.");
+        return;
+      }
       submitOrder();
     }
   };
@@ -266,7 +270,7 @@ export default function OrderClient({ dbPlans }: { dbPlans: any[] }) {
           <form id="config-form" onSubmit={handleNext} className="space-y-8 bg-white dark:bg-surface p-6 sm:p-10 shadow-sm border border-divider">
             <h1 className="text-3xl font-bold text-foreground mb-8 tracking-tight">Configure your {selectedPlan.name}</h1>
 
-            {errorMessage && step === 1 && (
+            {errorMessage && (
               <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 text-sm font-medium mb-6 flex items-center gap-2">
                 <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                 {errorMessage}
@@ -609,6 +613,12 @@ export default function OrderClient({ dbPlans }: { dbPlans: any[] }) {
 
             {/* Main Form Container */}
             <form id="personal-form" onSubmit={handleNext} className="bg-white dark:bg-surface p-8 shadow-sm border border-divider rounded-b-lg rounded-tr-lg relative z-0 -mt-[1px]">
+               {errorMessage && (
+                 <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 text-sm font-medium mb-6 flex items-center gap-2">
+                   <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                   {errorMessage}
+                 </div>
+               )}
                <div className="flex justify-between items-center mb-8">
                  <h2 className="text-[22px] font-bold text-[#202E39] dark:text-foreground">Personal Data</h2>
                  <div className="flex gap-2">
@@ -685,20 +695,20 @@ export default function OrderClient({ dbPlans }: { dbPlans: any[] }) {
                  </div>
                  
                  <div>
-                   <label className="block text-[13px] text-muted mb-1 font-medium">Telephone <span className="text-[10px] bg-divider/50 rounded-full px-1.5 py-0.5 ml-1 text-muted-foreground">?</span></label>
-                   <input type="tel" required className="w-full border border-divider rounded p-2.5 text-[14px] bg-transparent focus:border-accent focus:outline-none transition-colors" />
-                 </div>
-                 
-                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                   <div>
-                     <label className="block text-[13px] text-muted mb-1 font-medium">Email</label>
-                     <input type="email" required className="w-full border border-divider rounded p-2.5 text-[14px] bg-transparent focus:border-accent focus:outline-none transition-colors" value={formData.email || ''} onChange={e => setFormData({...formData, email: e.target.value})} />
-                   </div>
-                   <div>
-                     <label className="block text-[13px] text-muted mb-1 font-medium">Confirm Email</label>
-                     <input type="email" required className="w-full border border-divider rounded p-2.5 text-[14px] bg-transparent focus:border-accent focus:outline-none transition-colors" />
-                   </div>
-                 </div>
+                    <label className="block text-[13px] text-muted mb-1 font-medium">Telephone <span className="text-[10px] bg-divider/50 rounded-full px-1.5 py-0.5 ml-1 text-muted-foreground">?</span></label>
+                    <input type="tel" required className="w-full border border-divider rounded p-2.5 text-[14px] bg-transparent focus:border-accent focus:outline-none transition-colors" value={formData.telephone || ''} onChange={e => setFormData({...formData, telephone: e.target.value})} />
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div>
+                      <label className="block text-[13px] text-muted mb-1 font-medium">Email</label>
+                      <input type="email" required className="w-full border border-divider rounded p-2.5 text-[14px] bg-transparent focus:border-accent focus:outline-none transition-colors" value={formData.email || ''} onChange={e => setFormData({...formData, email: e.target.value})} />
+                    </div>
+                    <div>
+                      <label className="block text-[13px] text-muted mb-1 font-medium">Confirm Email</label>
+                      <input type="email" required className="w-full border border-divider rounded p-2.5 text-[14px] bg-transparent focus:border-accent focus:outline-none transition-colors" value={formData.confirmEmail || ''} onChange={e => setFormData({...formData, confirmEmail: e.target.value})} />
+                    </div>
+                  </div>
                </div>
                
                <div className="mt-12 flex justify-between items-end">
