@@ -573,7 +573,7 @@ export default function OrderClient({ dbPlans }: { dbPlans: any[] }) {
                           onChange={e => setPassword(e.target.value)}
                           required
                           minLength={8}
-                          className="w-full border border-divider rounded-md p-2.5 text-sm bg-white pr-10 focus:outline-none focus:border-accent"
+                          className="w-full border border-divider rounded-md p-2.5 text-sm bg-transparent text-foreground pr-10 focus:outline-none focus:border-accent"
                           placeholder="Enter a secure password"
                         />
                         <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-foreground">
